@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.session.SessionManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -15,6 +16,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -27,6 +29,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.session.Session;
 
@@ -224,12 +227,25 @@ public class PlayerListener implements Listener
 	{
 		Player player = event.getPlayer();
 
-		//Some plugins toggle flight off on world change based on permissions,
-		//so we need to make sure to force the flight status.
-		Boolean value = this.sessionManager.get(this.worldGuardPlugin.wrapPlayer(player)).getHandler(FlyFlagHandler.class).getCurrentValue();
-		if (value != null)
-		{
-			player.setAllowFlight(value);
-		}
-	}
+        // Some plugins toggle flight off on world change based on permissions,
+        // so we need to make sure to force the flight status.
+        Boolean value = this.sessionManager.get(this.worldGuardPlugin.wrapPlayer(player))
+                .getHandler(FlyFlagHandler.class).getCurrentValue();
+        if (value != null) {
+            player.setAllowFlight(value);
+        }
+    }
+
+    
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerInteractEntityEvent event) {
+        if (event.getRightClicked() instanceof Villager) {
+            Player player = event.getPlayer();
+            LocalPlayer localPlayer = this.worldGuardPlugin.wrapPlayer(player);
+            if (this.regionContainer.createQuery().queryState(localPlayer.getLocation(),
+                    localPlayer, Flags.DENY_VILLAGER_TRADE) == State.DENY) {
+                event.setCancelled(true);
+            }
+        }
+    }
 }

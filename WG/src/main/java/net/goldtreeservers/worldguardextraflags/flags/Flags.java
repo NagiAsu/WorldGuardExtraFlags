@@ -60,5 +60,7 @@ public final class Flags
 	
 	public final static StateFlag ITEM_DURABILITY = new StateFlag("item-durability", true);
 	
-	public final static LocationFlag JOIN_LOCATION = new LocationFlag("join-location");
+    public final static LocationFlag JOIN_LOCATION = new LocationFlag("join-location");
+
+    public final static StateFlag DENY_VILLAGER_TRADE = new StateFlag("deny-villager-trade", false);
 }
