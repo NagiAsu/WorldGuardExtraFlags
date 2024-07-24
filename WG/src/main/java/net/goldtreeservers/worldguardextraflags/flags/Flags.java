@@ -63,4 +63,6 @@ public final class Flags
     public final static LocationFlag JOIN_LOCATION = new LocationFlag("join-location");
 
     public final static StateFlag DENY_VILLAGER_TRADE = new StateFlag("deny-villager-trade", false);
+
+    public final static StateFlag DENY_SPAWNER = new StateFlag("deny-spawner", false);
 }

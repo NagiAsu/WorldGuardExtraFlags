@@ -13,10 +13,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.world.PortalCreateEvent;
 
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.association.RegionAssociable;
 import com.sk89q.worldguard.protection.flags.StateFlag.State;
 
 import lombok.Getter;
@@ -103,4 +105,13 @@ public class EntityListener implements Listener
 			}
 		}
 	}
+
+    @EventHandler(ignoreCancelled = true)
+    public void EntitySpawnEvent(CreatureSpawnEvent event) {
+        if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER) {
+            if(this.regionContainer.createQuery().queryState(BukkitAdapter.adapt(event.getLocation()), (RegionAssociable) null, Flags.DENY_SPAWNER) == State.DENY) {
+                event.setCancelled(true);
+            }
+        }
+    }
 }

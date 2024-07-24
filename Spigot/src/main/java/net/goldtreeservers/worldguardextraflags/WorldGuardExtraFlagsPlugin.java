@@ -87,6 +87,7 @@ public class WorldGuardExtraFlagsPlugin extends JavaPlugin
 			flagRegistry.register(Flags.ITEM_DURABILITY);
             flagRegistry.register(Flags.JOIN_LOCATION);
             flagRegistry.register(Flags.DENY_VILLAGER_TRADE);
+            flagRegistry.register(Flags.DENY_SPAWNER);
 		}
 		catch (Exception e)
 		{
