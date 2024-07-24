@@ -112,6 +112,12 @@ public class EntityListener implements Listener
             if(this.regionContainer.createQuery().queryState(BukkitAdapter.adapt(event.getLocation()), (RegionAssociable) null, Flags.DENY_SPAWNER) == State.DENY) {
                 event.setCancelled(true);
             }
+        } else if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) {
+            if (this.regionContainer.createQuery().queryState(
+                    BukkitAdapter.adapt(event.getLocation()), (RegionAssociable) null,
+                    Flags.DENY_SPAWN_EGG) == State.DENY) {
+                event.setCancelled(true);
+            }
         }
     }
 }

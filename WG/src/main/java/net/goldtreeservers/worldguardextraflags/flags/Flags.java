@@ -65,4 +65,6 @@ public final class Flags
     public final static StateFlag DENY_VILLAGER_TRADE = new StateFlag("deny-villager-trade", false);
 
     public final static StateFlag DENY_SPAWNER = new StateFlag("deny-spawner", false);
+
+    public final static StateFlag DENY_SPAWN_EGG = new StateFlag("deny-spawn-egg", false);
 }
